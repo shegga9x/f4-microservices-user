@@ -1,0 +1,25 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 1,
+    "applicationType": "microservice",
+    "authenticationType": "oauth2",
+    "baseName": "ms_user",
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "enableSwaggerCodegen": true,
+    "entities": ["User", "KeycloakUser"],
+    "jhipsterVersion": "8.10.0",
+    "jwtSecretKey": "ZDkxYmI2ZjJiNDIyNjg3ZGQ0NmVkNGViMjQ1OTU5MmQxMmNkNjY5NGIwMzk3NWMyNTRlNTA5ZjYyOGNlYmE2NmM4YWE2ODM5OTk2YzljM2E2YzcxYTY4MDEwZDRjZTQ3ZWQxMWIyNTFkMGI3ZDVlMzFjMjk0MjMxM2FhZGQwNDQ=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1745299515000,
+    "monorepository": true,
+    "nativeLanguage": "en",
+    "packageName": "com.f4.user",
+    "prodDatabaseType": "mysql",
+    "serverPort": "8081",
+    "serviceDiscoveryType": "consul",
+    "skipClient": true,
+    "skipCommitHook": true,
+    "skipUserManagement": true
+  }
+}
