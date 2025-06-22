@@ -1048,7 +1048,7 @@
             <properties>
                 <!-- default Spring profiles -->
                 <liquibase-plugin.password/>
-                <liquibase-plugin.url>jdbc:mysql://microservices.appf4.io.vn:3381/user</liquibase-plugin.url>
+                <liquibase-plugin.url>jdbc:mysql://microservices.appf4.io.vn:3381/user?allowLoadLocalInfile=true</liquibase-plugin.url>
                 <liquibase-plugin.username>root</liquibase-plugin.username>
                 <profile.test>test,testprod</profile.test>
                 <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
