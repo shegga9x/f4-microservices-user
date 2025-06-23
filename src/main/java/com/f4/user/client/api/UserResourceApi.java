@@ -7,7 +7,6 @@ import com.f4.user.client.model.ApiResponse;
 import java.util.UUID;
 import com.f4.user.client.model.UserDTO;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
