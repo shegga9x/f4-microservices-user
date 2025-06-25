@@ -2,7 +2,7 @@
   "annotations": {
     "changelogDate": "20250422052515"
   },
-  "applications": ["ms_user"],
+  "applications": ["gateway", "ms_user"],
   "clientRootFolder": "ms_user",
   "databaseType": "sql",
   "dto": "mapstruct",
@@ -35,7 +35,6 @@
   ],
   "microserviceName": "ms_user",
   "name": "KeycloakUser",
-  "pagination": "infinite-scroll",
   "relationships": [],
   "searchEngine": "no",
   "service": "serviceImpl"

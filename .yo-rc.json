@@ -8,6 +8,7 @@
     "devDatabaseType": "mysql",
     "enableSwaggerCodegen": true,
     "entities": ["User", "KeycloakUser"],
+    "gatewayServerPort": "8080",
     "jhipsterVersion": "8.10.0",
     "jwtSecretKey": "ZDkxYmI2ZjJiNDIyNjg3ZGQ0NmVkNGViMjQ1OTU5MmQxMmNkNjY5NGIwMzk3NWMyNTRlNTA5ZjYyOGNlYmE2NmM4YWE2ODM5OTk2YzljM2E2YzcxYTY4MDEwZDRjZTQ3ZWQxMWIyNTFkMGI3ZDVlMzFjMjk0MjMxM2FhZGQwNDQ=",
     "languages": ["en"],

@@ -5,12 +5,13 @@ import com.f4.user.repository.UserRepository;
 import com.f4.user.service.UserService;
 import com.f4.user.service.dto.UserDTO;
 import com.f4.user.service.mapper.UserMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,9 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserDTO> findAll(Pageable pageable) {
+    public List<UserDTO> findAll() {
         LOG.debug("Request to get all Users");
-        return userRepository.findAll(pageable).map(userMapper::toDto);
+        return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

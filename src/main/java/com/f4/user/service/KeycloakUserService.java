@@ -1,10 +1,9 @@
 package com.f4.user.service;
 
 import com.f4.user.service.dto.KeycloakUserDTO;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.f4.user.domain.KeycloakUser}.
@@ -37,10 +36,9 @@ public interface KeycloakUserService {
     /**
      * Get all the keycloakUsers.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<KeycloakUserDTO> findAll(Pageable pageable);
+    List<KeycloakUserDTO> findAll();
 
     /**
      * Get the "id" keycloakUser.

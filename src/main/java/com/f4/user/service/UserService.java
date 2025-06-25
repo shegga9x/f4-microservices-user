@@ -1,10 +1,9 @@
 package com.f4.user.service;
 
 import com.f4.user.service.dto.UserDTO;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.f4.user.domain.User}.
@@ -37,10 +36,9 @@ public interface UserService {
     /**
      * Get all the users.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<UserDTO> findAll(Pageable pageable);
+    List<UserDTO> findAll();
 
     /**
      * Get the "id" user.

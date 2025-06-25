@@ -5,12 +5,13 @@ import com.f4.user.repository.KeycloakUserRepository;
 import com.f4.user.service.KeycloakUserService;
 import com.f4.user.service.dto.KeycloakUserDTO;
 import com.f4.user.service.mapper.KeycloakUserMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,9 +66,9 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<KeycloakUserDTO> findAll(Pageable pageable) {
+    public List<KeycloakUserDTO> findAll() {
         LOG.debug("Request to get all KeycloakUsers");
-        return keycloakUserRepository.findAll(pageable).map(keycloakUserMapper::toDto);
+        return keycloakUserRepository.findAll().stream().map(keycloakUserMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
