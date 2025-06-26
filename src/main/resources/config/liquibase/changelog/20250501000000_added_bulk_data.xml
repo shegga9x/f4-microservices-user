@@ -33,7 +33,8 @@
             email,
             password_hash,
             created_at,
-            keycloak_user_id
+            keycloak_user_id,
+            user_avatar
         )
         SELECT
             t.id,  -- Use ID from temp_user_ids
@@ -41,7 +42,8 @@
             CONCAT(SUBSTRING(UUID(), 1, 8), '@example.com') AS email,
             'fake-password-hash',  -- Replace with real hash if needed
             DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY),
-            UUID() AS keycloak_user_id
+            UUID() AS keycloak_user_id,
+            CONCAT('https://example.com/avatar/', t.id, '.png') AS user_avatar
         FROM temp_user_ids t
         LIMIT 500000;
     </sql>
