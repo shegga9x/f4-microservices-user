@@ -51,6 +51,9 @@ class UserResourceIT {
     private static final UUID DEFAULT_KEYCLOAK_USER_ID = UUID.randomUUID();
     private static final UUID UPDATED_KEYCLOAK_USER_ID = UUID.randomUUID();
 
+    private static final String DEFAULT_USER_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_USER_AVATAR = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -85,7 +88,8 @@ class UserResourceIT {
             .email(DEFAULT_EMAIL)
             .passwordHash(DEFAULT_PASSWORD_HASH)
             .createdAt(DEFAULT_CREATED_AT)
-            .keycloakUserId(DEFAULT_KEYCLOAK_USER_ID);
+            .keycloakUserId(DEFAULT_KEYCLOAK_USER_ID)
+            .userAvatar(DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -100,7 +104,8 @@ class UserResourceIT {
             .email(UPDATED_EMAIL)
             .passwordHash(UPDATED_PASSWORD_HASH)
             .createdAt(UPDATED_CREATED_AT)
-            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID);
+            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID)
+            .userAvatar(UPDATED_USER_AVATAR);
     }
 
     @BeforeEach
@@ -259,7 +264,8 @@ class UserResourceIT {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].passwordHash").value(hasItem(DEFAULT_PASSWORD_HASH)))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
-            .andExpect(jsonPath("$.[*].keycloakUserId").value(hasItem(DEFAULT_KEYCLOAK_USER_ID.toString())));
+            .andExpect(jsonPath("$.[*].keycloakUserId").value(hasItem(DEFAULT_KEYCLOAK_USER_ID.toString())))
+            .andExpect(jsonPath("$.[*].userAvatar").value(hasItem(DEFAULT_USER_AVATAR)));
     }
 
     @Test
@@ -278,7 +284,8 @@ class UserResourceIT {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.passwordHash").value(DEFAULT_PASSWORD_HASH))
             .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
-            .andExpect(jsonPath("$.keycloakUserId").value(DEFAULT_KEYCLOAK_USER_ID.toString()));
+            .andExpect(jsonPath("$.keycloakUserId").value(DEFAULT_KEYCLOAK_USER_ID.toString()))
+            .andExpect(jsonPath("$.userAvatar").value(DEFAULT_USER_AVATAR));
     }
 
     @Test
@@ -305,7 +312,8 @@ class UserResourceIT {
             .email(UPDATED_EMAIL)
             .passwordHash(UPDATED_PASSWORD_HASH)
             .createdAt(UPDATED_CREATED_AT)
-            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID);
+            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID)
+            .userAvatar(UPDATED_USER_AVATAR);
         UserDTO userDTO = userMapper.toDto(updatedUser);
 
         restUserMockMvc
@@ -398,7 +406,11 @@ class UserResourceIT {
         User partialUpdatedUser = new User();
         partialUpdatedUser.setId(user.getId());
 
-        partialUpdatedUser.username(UPDATED_USERNAME).passwordHash(UPDATED_PASSWORD_HASH).createdAt(UPDATED_CREATED_AT);
+        partialUpdatedUser
+            .username(UPDATED_USERNAME)
+            .passwordHash(UPDATED_PASSWORD_HASH)
+            .createdAt(UPDATED_CREATED_AT)
+            .userAvatar(UPDATED_USER_AVATAR);
 
         restUserMockMvc
             .perform(
@@ -432,7 +444,8 @@ class UserResourceIT {
             .email(UPDATED_EMAIL)
             .passwordHash(UPDATED_PASSWORD_HASH)
             .createdAt(UPDATED_CREATED_AT)
-            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID);
+            .keycloakUserId(UPDATED_KEYCLOAK_USER_ID)
+            .userAvatar(UPDATED_USER_AVATAR);
 
         restUserMockMvc
             .perform(

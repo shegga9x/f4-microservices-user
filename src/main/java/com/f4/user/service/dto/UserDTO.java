@@ -30,6 +30,8 @@ public class UserDTO implements Serializable {
     @NotNull
     private UUID keycloakUserId;
 
+    private String userAvatar;
+
     public UUID getId() {
         return id;
     }
@@ -78,6 +80,14 @@ public class UserDTO implements Serializable {
         this.keycloakUserId = keycloakUserId;
     }
 
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,6 +119,7 @@ public class UserDTO implements Serializable {
             ", passwordHash='" + getPasswordHash() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", keycloakUserId='" + getKeycloakUserId() + "'" +
+            ", userAvatar='" + getUserAvatar() + "'" +
             "}";
     }
 }

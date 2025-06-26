@@ -51,7 +51,8 @@ public class UserAsserts {
             .satisfies(a -> assertThat(a.getEmail()).as("check email").isEqualTo(expected.getEmail()))
             .satisfies(a -> assertThat(a.getPasswordHash()).as("check passwordHash").isEqualTo(expected.getPasswordHash()))
             .satisfies(a -> assertThat(a.getCreatedAt()).as("check createdAt").isEqualTo(expected.getCreatedAt()))
-            .satisfies(a -> assertThat(a.getKeycloakUserId()).as("check keycloakUserId").isEqualTo(expected.getKeycloakUserId()));
+            .satisfies(a -> assertThat(a.getKeycloakUserId()).as("check keycloakUserId").isEqualTo(expected.getKeycloakUserId()))
+            .satisfies(a -> assertThat(a.getUserAvatar()).as("check userAvatar").isEqualTo(expected.getUserAvatar()));
     }
 
     /**

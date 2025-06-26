@@ -49,6 +49,9 @@ public class User implements Serializable {
     @Column(name = "keycloak_user_id", length = 36, nullable = false)
     private UUID keycloakUserId;
 
+    @Column(name = "user_avatar")
+    private String userAvatar;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public UUID getId() {
@@ -129,6 +132,19 @@ public class User implements Serializable {
         this.keycloakUserId = keycloakUserId;
     }
 
+    public String getUserAvatar() {
+        return this.userAvatar;
+    }
+
+    public User userAvatar(String userAvatar) {
+        this.setUserAvatar(userAvatar);
+        return this;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -158,6 +174,7 @@ public class User implements Serializable {
             ", passwordHash='" + getPasswordHash() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", keycloakUserId='" + getKeycloakUserId() + "'" +
+            ", userAvatar='" + getUserAvatar() + "'" +
             "}";
     }
 }

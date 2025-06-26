@@ -10,7 +10,8 @@ public class UserTestSamples {
             .username("username1")
             .email("email1")
             .passwordHash("passwordHash1")
-            .keycloakUserId(UUID.fromString("23d8dc04-a48b-45d9-a01d-4b728f0ad4aa"));
+            .keycloakUserId(UUID.fromString("23d8dc04-a48b-45d9-a01d-4b728f0ad4aa"))
+            .userAvatar("userAvatar1");
     }
 
     public static User getUserSample2() {
@@ -19,7 +20,8 @@ public class UserTestSamples {
             .username("username2")
             .email("email2")
             .passwordHash("passwordHash2")
-            .keycloakUserId(UUID.fromString("ad79f240-3727-46c3-b89f-2cf6ebd74367"));
+            .keycloakUserId(UUID.fromString("ad79f240-3727-46c3-b89f-2cf6ebd74367"))
+            .userAvatar("userAvatar2");
     }
 
     public static User getUserRandomSampleGenerator() {
@@ -28,6 +30,7 @@ public class UserTestSamples {
             .username(UUID.randomUUID().toString())
             .email(UUID.randomUUID().toString())
             .passwordHash(UUID.randomUUID().toString())
-            .keycloakUserId(UUID.randomUUID());
+            .keycloakUserId(UUID.randomUUID())
+            .userAvatar(UUID.randomUUID().toString());
     }
 }

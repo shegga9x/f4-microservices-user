@@ -29,6 +29,9 @@
             <column name="keycloak_user_id" type="${uuidType}">
                 <constraints nullable="false" />
             </column>
+            <column name="user_avatar" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="user" columnName="created_at" columnDataType="${datetimeType}"/>
@@ -56,6 +59,7 @@
             <column name="password_hash" type="string"/>
             <column name="created_at" type="date"/>
             <column name="keycloak_user_id" type="string"/>
+            <column name="user_avatar" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
