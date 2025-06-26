@@ -4,6 +4,7 @@
     "applicationType": "microservice",
     "authenticationType": "oauth2",
     "baseName": "ms_user",
+    "cacheProvider": "redis",
     "databaseType": "sql",
     "devDatabaseType": "mysql",
     "enableSwaggerCodegen": true,

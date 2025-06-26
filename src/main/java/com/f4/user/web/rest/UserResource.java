@@ -12,10 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -168,5 +172,52 @@ public class UserResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /users/sync-to-redis} : Sync all users to Redis.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and sync result in body.
+     */
+    @PostMapping("/sync-to-redis")
+    public ResponseEntity<Map<String, Object>> syncUsersToRedis() {
+        LOG.debug("REST request to sync all users to Redis");
+        
+        // For 1M records, start async processing
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return userService.syncAllUsersToRedis();
+            } catch (Exception e) {
+                LOG.error("Error during Redis sync: {}", e.getMessage());
+                return 0L;
+            }
+        }).thenAccept(count -> {
+            LOG.info("Async Redis sync completed. Synced {} users", count);
+        });
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "Redis sync started in background. Check logs for progress.");
+        result.put("status", "STARTED");
+        
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * {@code POST  /users/sync-to-redis/sync} : Synchronously sync users to Redis (for smaller datasets).
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and sync result in body.
+     */
+    @PostMapping("/sync-to-redis/sync")
+    public ResponseEntity<Map<String, Object>> syncUsersToRedisSync() {
+        LOG.debug("REST request to synchronously sync users to Redis");
+        
+        long syncedCount = userService.syncAllUsersToRedis();
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("syncedCount", syncedCount);
+        result.put("message", "Successfully synced " + syncedCount + " users to Redis");
+        result.put("status", "COMPLETED");
+        
+        return ResponseEntity.ok(result);
     }
 }

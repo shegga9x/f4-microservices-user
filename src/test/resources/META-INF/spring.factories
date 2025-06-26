@@ -1,2 +1,3 @@
 org.springframework.test.context.ContextCustomizerFactory = \
-    com.f4.user.config.SqlTestContainersSpringContextCustomizerFactory
+    com.f4.user.config.SqlTestContainersSpringContextCustomizerFactory,com.f4.\
+    user.config.RedisTestContainersSpringContextCustomizerFactory

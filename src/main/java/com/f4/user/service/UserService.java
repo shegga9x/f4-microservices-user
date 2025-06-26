@@ -54,4 +54,11 @@ public interface UserService {
      * @param id the id of the entity.
      */
     void delete(UUID id);
+
+    /**
+     * Sync all users to Redis.
+     *
+     * @return the number of users synced to Redis.
+     */
+    long syncAllUsersToRedis();
 }

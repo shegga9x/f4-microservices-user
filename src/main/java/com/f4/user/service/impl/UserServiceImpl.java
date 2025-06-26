@@ -12,8 +12,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.redisson.api.RedissonClient;
+import org.redisson.api.RBucket;
+import org.redisson.api.RBatch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Service Implementation for managing {@link com.f4.user.domain.User}.
@@ -25,12 +32,16 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
+    private final RedissonClient redissonClient;
+    private final ObjectMapper objectMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, 
+                          RedissonClient redissonClient, ObjectMapper objectMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.redissonClient = redissonClient;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -83,4 +94,73 @@ public class UserServiceImpl implements UserService {
         LOG.debug("Request to delete User : {}", id);
         userRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long syncAllUsersToRedis() {
+        LOG.debug("Request to sync all users to Redis");
+        
+        long totalCount = userRepository.count();
+        LOG.info("Starting sync of {} users to Redis", totalCount);
+        
+        int pageSize = 1000; // Process 1000 users at a time
+        int batchSize = 100;  // Redis batch operations
+        long syncedCount = 0;
+        int pageNumber = 0;
+        
+        while (true) {
+            Pageable pageable = PageRequest.of(pageNumber, pageSize);
+            Page<User> userPage = userRepository.findAll(pageable);
+            
+            if (userPage.isEmpty()) {
+                break;
+            }
+            
+            List<User> users = userPage.getContent();
+            
+            // Process users in smaller batches for Redis
+            for (int i = 0; i < users.size(); i += batchSize) {
+                int endIndex = Math.min(i + batchSize, users.size());
+                List<User> batchUsers = users.subList(i, endIndex);
+                
+                try {
+                    RBatch batch = redissonClient.createBatch();
+                    
+                    for (User user : batchUsers) {
+                        try {
+                            UserDTO userDTO = userMapper.toDto(user);
+                            String jsonValue = objectMapper.writeValueAsString(userDTO);
+                            String redisKey = "user:" + user.getId().toString();
+                            
+                            batch.getBucket(redisKey).setAsync(jsonValue);
+                        } catch (Exception e) {
+                            LOG.error("Failed to prepare user {} for Redis batch: {}", user.getId(), e.getMessage());
+                        }
+                    }
+                    
+                    batch.execute();
+                    syncedCount += batchUsers.size();
+                    
+                } catch (Exception e) {
+                    LOG.error("Failed to execute Redis batch: {}", e.getMessage());
+                }
+            }
+            
+            pageNumber++;
+            
+            if (syncedCount % 10000 == 0) {
+                double progress = (double) syncedCount / totalCount * 100;
+                LOG.info("Synced {}/{} users to Redis ({:.2f}%)", syncedCount, totalCount, progress);
+            }
+            
+            if (!userPage.hasNext()) {
+                break;
+            }
+        }
+        
+        LOG.info("Successfully synced {} out of {} users to Redis", syncedCount, totalCount);
+        return syncedCount;
+    }
+
 }
+

@@ -25,7 +25,7 @@
         </sql>
     </changeSet>
     <!-- ChangeSet 3: Insert fake reel records using UUIDs from temp_user_ids -->
-    <changeSet id="202506200001" author="jhipster">
+    <changeSet id="202506200001-a" author="jhipster">
         <sql>
         INSERT INTO user (
             id,
@@ -46,6 +46,29 @@
             CONCAT('https://example.com/avatar/', t.id, '.png') AS user_avatar
         FROM temp_user_ids t
         LIMIT 500000;
+    </sql>
+    </changeSet>
+    <changeSet id="202506200001-b" author="jhipster">
+        <sql>
+        INSERT INTO user (
+            id,
+            username,
+            email,
+            password_hash,
+            created_at,
+            keycloak_user_id,
+            user_avatar
+        )
+        SELECT
+            t.id,  -- Use ID from temp_user_ids
+            CONCAT('user_',(ROW_NUMBER() OVER () + 500000))AS username,
+            CONCAT(SUBSTRING(UUID(), 1, 8), '@example.com') AS email,
+            'fake-password-hash',  -- Replace with real hash if needed
+            DATE_SUB(NOW(), INTERVAL FLOOR(RAND()*365) DAY),
+            UUID() AS keycloak_user_id,
+            CONCAT('https://example.com/avatar/', t.id, '.png') AS user_avatar
+        FROM temp_user_ids t
+        LIMIT 500000 OFFSET 500000;
     </sql>
     </changeSet>
     <!-- ChangeSet 4: Drop temp_user_ids table -->

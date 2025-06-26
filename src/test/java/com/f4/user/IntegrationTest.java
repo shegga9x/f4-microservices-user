@@ -1,6 +1,7 @@
 package com.f4.user;
 
 import com.f4.user.config.AsyncSyncConfiguration;
+import com.f4.user.config.EmbeddedRedis;
 import com.f4.user.config.EmbeddedSQL;
 import com.f4.user.config.JacksonConfiguration;
 import com.f4.user.config.TestSecurityConfiguration;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(classes = { MsUserApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class, TestSecurityConfiguration.class })
+@EmbeddedRedis
 @EmbeddedSQL
 public @interface IntegrationTest {
 }
