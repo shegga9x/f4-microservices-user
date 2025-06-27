@@ -193,14 +193,14 @@ public class UserServiceImpl implements UserService {
                 // If found in database, cache it in Redis for future requests
                 if (userFromDb.isPresent()) {
                     try {
-                        RedisUserDTO redisUserDTO = new RedisUserDTO(userFromDb.get());
+                        RedisUserDTO redisUserDTO = new RedisUserDTO(userFromDb.orElseThrow());
                         String jsonToCache = objectMapper.writeValueAsString(redisUserDTO);
                         bucket.set(jsonToCache);
                         LOG.debug("Cached user {} in Redis", id);
                         return Optional.of(redisUserDTO);
                     } catch (Exception e) {
                         LOG.error("Failed to cache user {} in Redis: {}", id, e.getMessage());
-                        return Optional.of(new RedisUserDTO(userFromDb.get()));
+                        return Optional.of(new RedisUserDTO(userFromDb.orElseThrow()));
                     }
                 }
 
@@ -208,8 +208,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             LOG.error("Error getting user {} from Redis, falling back to database: {}", id, e.getMessage());
-            Optional<UserDTO> userFromDb = userRepository.findById(id).map(userMapper::toDto);
-            return userFromDb.map(RedisUserDTO::new);
+            return userRepository.findById(id).map(userMapper::toDto).map(RedisUserDTO::new);
         }
     }
 
