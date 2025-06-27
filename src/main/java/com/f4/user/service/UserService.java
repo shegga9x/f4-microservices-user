@@ -1,5 +1,6 @@
 package com.f4.user.service;
 
+import com.f4.user.service.dto.RedisUserDTO;
 import com.f4.user.service.dto.UserDTO;
 import java.util.List;
 import java.util.Optional;
@@ -61,4 +62,20 @@ public interface UserService {
      * @return the number of users synced to Redis.
      */
     long syncAllUsersToRedis();
+
+    /**
+     * Get user from Redis by ID with fallback to database.
+     *
+     * @param id the id of the user.
+     * @return the user from Redis or database as RedisUserDTO.
+     */
+    Optional<RedisUserDTO> findOneFromRedis(UUID id);
+
+    /**
+     * Get multiple users from Redis by IDs with fallback to database.
+     *
+     * @param ids the list of user IDs.
+     * @return the list of users from Redis or database as RedisUserDTO.
+     */
+    List<RedisUserDTO> findMultipleFromRedis(List<UUID> ids);
 }
